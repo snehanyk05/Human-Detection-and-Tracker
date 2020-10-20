@@ -4,7 +4,9 @@
 ---
 #TODO
 
-Initialize an iteration1 Development Branch
+[1] Initialize an iteration1 Development Branch
+[2] Research about options for human detection
+[3] Setup opencv and other dependencies
 
 ## Overview
 
