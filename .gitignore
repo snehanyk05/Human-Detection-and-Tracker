@@ -1,3 +1,5 @@
+#weights
+darknet/yolov4.weights
 # VS Code files
 *.VC.db*
 
