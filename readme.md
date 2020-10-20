@@ -1,8 +1,9 @@
 # C++ Boilerplate
 [![Build Status](https://travis-ci.org/sukoonsarin/Human-Detection-and-Tracker.svg?branch=iter1_dev)](https://travis-ci.org/github/sukoonsarin/Human-Detection-and-Tracker)
 [![Coverage Status](https://coveralls.io/repos/github/sukoonsarin/Human-Detection-and-Tracker/badge.svg?branch=iter1_dev)](https://coveralls.io/github/sukoonsarin/Human-Detection-and-Tracker?branch=iter1_dev)
+MIT Licence [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](LICENSE.md) 
 ---
-#Link to Phase 1 Presentation Video
+## Link to Phase 1 Presentation Video
 
 https://drive.google.com/drive/folders/1lJ3bBe_7tFxXyDnSp5FBbLZLtUFEFj50?usp=sharing
 
