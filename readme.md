@@ -24,7 +24,9 @@ https://docs.google.com/document/d/1PhiaCQiU5IhbYd66ARC0uiOVwrjqZ-Kwy5KarFBFgZk/
 
 [4] Unit test and Stub implementation complete for iteration 1
 
-[4] Merged iter1_dev branch to master, deleted iter1_branch & created tag v1.0
+[5] Merged iter1_dev branch to master, deleted iter1_branch & created tag v1.0
+
+[6] Created iter2_dev branch for iteration 2
 
 ## Overview
 
