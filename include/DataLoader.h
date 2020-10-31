@@ -30,7 +30,7 @@ private:
      * @brief Private variable to define the type for our input stream
      * 
      */
-    std::string method;
+    std::string method_;
     /**
      * @brief Private variable to Store current frame
      * 

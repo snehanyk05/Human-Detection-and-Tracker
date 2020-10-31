@@ -16,17 +16,19 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include "Detection.h"
-#include "DataLoader.h"
-#include "Track.h"
+#include "../include/DataLoader.h"
+#include "../include/Detection.h"
+#include "../include/Track.h"
 #include <map>
 #include <vector>
+#include <iostream>
 
 DataLoader dummydataloader;
 Detection detection1;
 Track dummytrack;
-std::vector<float> vec1 = { 0.7, 0.9, 0.2, 0.2};
-std::vector<std::vector<float>> vec2 = { { 34.0,23.1,64.2,53.4 }, { 64.3,53.3,94.3,83.3 }, { 1.0, 2.0, 3.0, 4.0 } };
+std::vector<float> vec1 = { 0.7, 0.9};
+// std::vector<std::vector<float>> vec2 = { { 34.0,23.1,64.2,53.4 }, { 64.3,53.3,94.3,83.3 }, { 1.0, 2.0, 3.0, 4.0 } };
+std::vector<std::vector<float>> vec2 = { { 34.0,23.1,64.2,53.4 }, { 64.3,53.3,94.3,83.3 }};
 std::map<std::string, std::vector<std::vector<float>>> dic1 =  {
     { std::string("A"), vec2},
     { std::string("B"), vec2},
@@ -37,7 +39,7 @@ std::map<std::string, std::vector<std::vector<float>>> dic1 =  {
  */
 TEST(DetectionTest, checkdetectionlist) {
   std::map<std::string, std::vector<std::vector<float>>> testmap = detection1.getAllDetectionsList();
-  EXPECT_EQ(dic1[0], testmap.begin()->second);
+  EXPECT_EQ(dic1["A"], testmap.begin()->second);
 }
 
 /**
