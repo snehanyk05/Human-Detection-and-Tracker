@@ -16,9 +16,9 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include "../include/Detection.h"
-#include "../include/DataLoader.h"
-#include "../include/Track.h"
+#include "Detection.h"
+#include "DataLoader.h"
+#include "Track.h"
 #include <map>
 #include <vector>
 
@@ -44,14 +44,14 @@ TEST(DetectionTest, checkdetectionlist) {
  * @brief Test case for getDetections method of Detection class. 
  */
 TEST(DetectionTest, checkdetections) {;
-  EXPECT_EQ(vec2[0], detection1.getDetections() );
+  EXPECT_EQ(vec2, detection1.getDetections() );
 }
 
 /**
  * @brief Test case for getConfidence method of Detection class. 
  */
 TEST(DetectionTest, checkconfidence) {;
-  EXPECT_EQ(vec1[0], detection1.getConfidence() );
+  EXPECT_EQ(vec1, detection1.getConfidence() );
 }
 
 /**
@@ -66,10 +66,10 @@ TEST(DataLoaderTest, SetandgetPath) {
 /**
  * @brief Test case for getFrame method of DataLoaderO class. 
  */
-TEST(DataLoaderTest, GetFrame) {
-  cv::Mat test_frame = cv::imread("../sample.jpg");
-  EXPECT_EQ(test_frame, dummydataloader.getFrame() );
-}
+// TEST(DataLoaderTest, GetFrame) {
+//   cv::Mat test_frame = cv::imread("../sample.jpg");
+//   EXPECT_EQ(test_frame, dummydataloader.getFrame() );
+// }
 
 /**
  * @brief Test case for getCoordinatesInCameraFrame method of Track class. 
