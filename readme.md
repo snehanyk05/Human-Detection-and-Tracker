@@ -17,8 +17,14 @@ https://docs.google.com/document/d/1PhiaCQiU5IhbYd66ARC0uiOVwrjqZ-Kwy5KarFBFgZk/
 #TODO
 
 [1] Initialize an iteration1 Development Branch
+
 [2] Research about options for human detection
+
 [3] Setup opencv and other dependencies
+
+[4] Unit test and Stub implementation complete for iteration 1
+
+[4] Merged iter1_dev branch to master, deleted iter1_branch & created tag v1.0
 
 ## Overview
 
