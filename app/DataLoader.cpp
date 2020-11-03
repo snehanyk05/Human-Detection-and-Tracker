@@ -25,13 +25,13 @@ DataLoader::DataLoader()
  * @brief Set the Input Stream Method object
  */
 void DataLoader::setInputStreamMethod(std::string method){
-  method = method;
+  method_ = method;
 }
 /**
  * @brief Get the Input Stream Method object. Fetches input method 
  */
 std::string DataLoader::getInputStreamMethod(){
-  return method;
+  return method_;
 }
 /**
  * @brief Fetches the current Frame

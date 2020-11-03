@@ -4,6 +4,9 @@ add_executable(
     cpp-test
     main.cpp
     test.cpp
+    ${CMAKE_SOURCE_DIR}/app/DataLoader.cpp
+    ${CMAKE_SOURCE_DIR}/app/Detection.cpp
+    ${CMAKE_SOURCE_DIR}/app/Track.cpp
 )
 
 target_include_directories(cpp-test PUBLIC ../vendor/googletest/googletest/include 
