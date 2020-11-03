@@ -14,30 +14,33 @@
 
 /**
  * @brief Detection constructor.
- */ 
+ */
 Detection::Detection()
 {
-    confThreshold = 0.0;
-    nmsThreshold = 0.0;
-    inpWidth = 0.0;
-    inpHeight = 0.0;
+  confThreshold_ = 0.5;
+  nmsThreshold_ = 0.4;
+  inpWidth_ = 416;
+  inpHeight_ = 416;
+  modelClassFile_ = "../coco.names";
+  modelConfigFile_ = "../yolov4.cfg";
+  modelWeightsFile_ = "../yolov4.weights";
 
-  std::vector<float> v(4);
-  v = { 34.0,23.1,64.2,53.4 };
-  detections.push_back(v);
-  confidenceDetection.push_back(0.7);
+  // std::vector<float> v(4);
+  // v = { 34.0,23.1,64.2,53.4 };
+  // detections.push_back(v);
+  // confidenceDetection.push_back(0.7);
 
-  std::vector<float> v1(4);
-  v1 = { 64.3,53.3,94.3,83.3 };
-  detections.push_back(v1);
+  // std::vector<float> v1(4);
+  // v1 = { 64.3,53.3,94.3,83.3 };
+  // detections.push_back(v1);
 
-  confidenceDetection.push_back(0.9);
-  detectionsDict["frame_1"]= detections;
+  // confidenceDetection.push_back(0.9);
+  // detectionsDict["frame_1"]= detections;
 }
 /**
  * @brief Fetches all bounding boxes of detected humans in a single frame
  */
-std::vector<std::vector<float>> Detection::getDetections()
+std::vector<cv::Rect> Detection::getDetections()
 {
   return detections;
 }
@@ -48,39 +51,158 @@ std::vector<float> Detection::getConfidence()
 {
   return confidenceDetection;
 }
-/**
- * @brief Fetches all detections for all Frames
- */
-std::map<std::string, std::vector<std::vector<float>>> Detection::getAllDetectionsList()
-{
-  return detectionsDict; 
-}
 
- /**
+
+/**
  * @brief Initializes Confidence and non maximum suppression threshold along with width and height of the image
  */
 void Detection::initializeParams(float confThreshold, float nmsThreshold, float inpWidth, float inpHeight)
 {
+  confThreshold_ = confThreshold;
+  nmsThreshold_ = nmsThreshold;
+  inpWidth_ = inpWidth;
+  inpHeight_ = inpHeight;
 }
 /**
  * @brief Sets path to model weights file, model config file and model class files
  */
 void Detection::loadModelandLabelClasses(std::string modelWeightsFile, std::string modelConfigFile, std::string modelClassFile)
 {
+  modelClassFile_ = modelClassFile;
+  modelConfigFile_ = modelConfigFile;
+  modelWeightsFile_ = modelWeightsFile;
 }
+
 /**
- * @brief Fetched current frame 
+ * @brief Sets current frame
  */
-cv::Mat Detection::readInput() {}
+
+void Detection::setFrame(cv::Mat frame)
+{
+
+  frame_ = frame;
+}
 /**
  * @brief RUns YOLOv4 algo and detects humans. If humans detected returns 1 else 0.
  */
-bool Detection::processFrameforHuman(cv::Mat frame) {}
+std::vector<cv::Rect> Detection::processFrameforHuman()
+{
+  std::ifstream ifs(modelClassFile_.c_str());
+  std::string line;
+  while (getline(ifs, line))
+    classes.push_back(line);
+
+  cv::dnn::Net net = cv::dnn::readNetFromDarknet(modelConfigFile_, modelWeightsFile_);
+  net.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
+  net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
+
+  cv::Mat blob;
+  cv::dnn::blobFromImage(frame_, blob, 1 / 255.0, cv::Size(inpWidth_, inpHeight_), cv::Scalar(0, 0, 0), true, false);
+  net.setInput(blob);
+  std::vector<cv::Mat> outs;
+  net.forward(outs, getOutputsNames(net));
+
+  detections = postProcess(outs);
+
+  // cv::Mat detectedFrame;
+  // frame_.convertTo(detectedFrame, CV_8U);
+
+  return detections;
+}
 /**
  * @brief Draws a bounding box over frame from the given coordinates
  */
-void Detection::drawRedBoundingBox(std::vector<float> coordinates) {}
-/**
- * @brief Stores detections and confidence sores w.r.t frame IDs
- */
-void Detection::storeFoundCoordinates(int frame_id, std::vector<std::vector<float>> detections, std::vector<float> confidenceDetection) {}
+void Detection::drawRedBoundingBox(std::vector<int> coordinates, int classID)
+{
+  //Draw a rectangle displaying the bounding box
+  cv::rectangle(frame_, cv::Point(coordinates[0], coordinates[1]), cv::Point(coordinates[2], coordinates[3]), cv::Scalar(0, 0, 255), 3);
+
+  //Get the label for the class name and its confidence
+  std::string label = cv::format("%.2f", 1);
+  // if (!classes.empty())
+  // {
+  // CV_Assert(classId < (int)classes.size());
+  label = classes[classID] + ":" + label;
+  // }
+
+  //Display the label at the top of the bounding box
+  int baseLine;
+  cv::Size labelSize = cv::getTextSize(label, cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseLine);
+  coordinates[1] = std::max(coordinates[1], (labelSize.height));
+  cv::rectangle(frame_, cv::Point(coordinates[0], coordinates[1] - round(1.5 * labelSize.height)), cv::Point(coordinates[0] + round(1.5 * labelSize.width), coordinates[1] + baseLine), cv::Scalar(255, 255, 255), cv::FILLED);
+  cv::putText(frame_, label, cv::Point(coordinates[0], coordinates[1]), cv::FONT_HERSHEY_SIMPLEX, 0.75, cv::Scalar(0, 0, 0), 1);
+}
+
+std::vector<cv::Rect> Detection::postProcess(const std::vector<cv::Mat> &outs)
+{
+  std::vector<int> classIds;
+  std::vector<float> confidences;
+  std::vector<cv::Rect> boxes;
+
+  for (size_t i = 0; i < outs.size(); ++i)
+  {
+    // Scan through all the bounding boxes output from the network and keep only the
+    // ones with high confidence scores. Assign the box's class label as the class
+    // with the highest score for the box.
+    float *data = (float *)outs[i].data;
+    for (int j = 0; j < outs[i].rows; ++j, data += outs[i].cols)
+    {
+      cv::Mat scores = outs[i].row(j).colRange(5, outs[i].cols);
+      cv::Point classIdPoint;
+      double confidence;
+      // Get the value and location of the maximum score
+      minMaxLoc(scores, 0, &confidence, 0, &classIdPoint);
+      if (confidence > confThreshold_)
+      {
+        int centerX = (int)(data[0] * frame_.cols);
+        int centerY = (int)(data[1] * frame_.rows);
+        int width = (int)(data[2] * frame_.cols);
+        int height = (int)(data[3] * frame_.rows);
+        int left = centerX - width / 2;
+        int top = centerY - height / 2;
+
+        if (classes[classIdPoint.x] == "person")
+        {
+          classIds.push_back(classIdPoint.x);
+          confidences.push_back((float)confidence);
+          boxes.push_back(cv::Rect(left, top, width, height));
+        }
+      }
+    }
+  }
+
+  // Perform non maximum suppression to eliminate redundant overlapping boxes with
+  // lower confidences
+  std::vector<int> indices;
+  cv::dnn::dnn4_v20200908::NMSBoxes(boxes, confidences, confThreshold_, nmsThreshold_, indices);
+  for (size_t i = 0; i < indices.size(); ++i)
+  {
+    int idx = indices[i];
+    cv::Rect box = boxes[idx];
+
+    std::vector<int> coordinates = {box.x, box.y, box.x + box.width, box.y + box.height};
+
+    if (classes[classIds[idx]] == "person")
+      drawRedBoundingBox(coordinates, classIds[idx]);
+  }
+  return boxes;
+}
+
+std::vector<cv::String> Detection::getOutputsNames(const cv::dnn::Net &net)
+{
+  static std::vector<cv::String> names;
+  if (names.empty())
+  {
+    //Get the indices of the output layers, i.e. the layers with unconnected outputs
+    std::vector<int> outLayers = net.getUnconnectedOutLayers();
+
+    //get the names of all the layers in the network
+    std::vector<cv::String> layersNames = net.getLayerNames();
+
+    // Get the names of the output layers in names
+    names.resize(outLayers.size());
+    for (size_t i = 0; i < outLayers.size(); ++i)
+      names[i] = layersNames[outLayers[i] - 1];
+  }
+  return names;
+}
