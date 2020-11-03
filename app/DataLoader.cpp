@@ -29,6 +29,12 @@ DataLoader::DataLoader()
     path = "../person.jpg";
     frame_ = cv::imread(path, cv::IMREAD_COLOR);
 }
+
+DataLoader::Dataloader(std::string path_, std::string method)
+{
+    path = path_;
+    method_ = method;
+}
 /**
  * @brief Set the Input Stream Method object
  */
@@ -103,14 +109,30 @@ void DataLoader::processInput(cv::CommandLineParser parser)
             // Get the video writer initialized to save the output video
             video.open(outputFile, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 28, cv::Size(capture.get(cv::CAP_PROP_FRAME_WIDTH), capture.get(cv::CAP_PROP_FRAME_HEIGHT)));
         }
-        else {
+        else
+        {
             // Open the default input file
-            std::ifstream inputfile(path);
-            if (!inputfile) 
-                throw("error: Image or video file required");
-            capture.open(path);
-            path.replace(path.end()-4, path.end(), "_YOLOv4_output_cpp.jpg");
-            outputFile = path;
+
+            if (method_ == "image")
+            {
+                std::ifstream inputfile(path);
+                if (!inputfile)
+                    throw("error: Image or video file required");
+                capture.open(path);
+                path.replace(path.end() - 4, path.end(), "_YOLOv4_output_cpp.jpg");
+                outputFile = path;
+            }
+            else
+            {
+                std::ifstream inputfile(path);
+                if (!inputfile)
+                    throw("error: Image or video file required");
+                capture.open(path);
+                path.replace(path.end() - 4, path.end(), "_YOLOv4_output_cpp.avi");
+                outputFile = path;
+                // Get the video writer initialized to save the output video
+                video.open(outputFile, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 28, cv::Size(capture.get(cv::CAP_PROP_FRAME_WIDTH), capture.get(cv::CAP_PROP_FRAME_HEIGHT)));
+            }
         }
     }
     catch (...)
