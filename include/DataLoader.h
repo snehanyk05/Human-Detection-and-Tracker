@@ -35,19 +35,21 @@ private:
      * @brief Private variable to Store current frame
      * 
      */
-    cv::Mat frame;
-    
-    /**
-     * @brief Private variable to Store sequence of Frame 
-     * 
-     */
-    std::vector<cv::Mat> sequenceOfFrames;
+    cv::Mat frame_;
     
     /**
      * @brief Private varible for path to the input method  
      * 
      */
     std::string path;
+
+
+
+    /**
+     * @brief Private variable to 
+     * 
+     */
+    std::string outputFile;
 
 public:
     /**
@@ -71,11 +73,19 @@ public:
     std::string getInputStreamMethod();
 
     /**
-     * @brief Fetches the current Frame
+     * @brief Processes the input file
      * @param void
-     * @return cv::Mat - Returns the current Frame
+     * @return void
      */
-    cv::Mat getFrame();
+    void processInput(cv::CommandLineParser parser);
+
+
+  /**
+   * @brief updates isVideo and isImage values.
+   * @param[in] parser It containes information about the imagepath and videopath.
+   * @return type int.
+   */
+    int checkParser(cv::CommandLineParser parser);
 
     /**
      * @brief Destroy the Data Loader object
