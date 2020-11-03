@@ -7,7 +7,6 @@
  * @brief Main file to run detetction and tracking
  */
 #include "../include/DataLoader.h"
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -28,7 +27,6 @@ int main(int argc, char** argv) {
     
     DataLoader data;
 
-
     cv::CommandLineParser parser(argc, argv, keys);
     parser.about("Use this script to run Human detection using YOLOv4 in OpenCV.");
     if (parser.has("help"))
@@ -38,12 +36,11 @@ int main(int argc, char** argv) {
     }
 
     int input_type = data.checkParser(parser);
-    if (input_type == 0)
-        data.processInput(parser);
-     else {
+    if (input_type == -1) {
         data.setInputStreamMethod(std::string("Image"));
         std::cout << "Data input method is : " << data.getInputStreamMethod()<< std::endl;
     }
+    data.processInput(parser);
 
   return 0;
 }
