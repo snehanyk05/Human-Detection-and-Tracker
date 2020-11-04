@@ -22,7 +22,7 @@ endif()
 
 include(CMakeToolsHelpers OPTIONAL)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(OpenCV_DIR ~/OpenCV-4.5.0/lib/cmake/opencv4)
 find_package(OpenCV 4.5.0 REQUIRED)
 include_directories(include/ ${OpenCV_INCLUDE_DIRS})
