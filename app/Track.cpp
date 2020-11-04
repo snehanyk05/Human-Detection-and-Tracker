@@ -56,7 +56,16 @@ cv::Mat Track::drawGreenBoundingBox()
 {
   for (const auto &object : multiTracker->getObjects())
   {
+
     cv::rectangle(frame_, object, cv::Scalar(255, 0, 0), 2, 8);
+
+    std::vector<float> coordinates= {float(object.x), float(object.width), float(object.y), float(object.height)};
+    std::vector<float> pose = getCoordinatesInCameraFrame(coordinates);
+    std::string label = cv::format("%.2f", pose[0]);
+    label = "Pose: ("+label + ","+cv::format("%.2f", pose[1])+")";
+    // int baseLine;
+    // cv::Size labelSize = cv::getTextSize(label, cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseLine);
+    cv::putText(frame_, label, cv::Point(coordinates[0], coordinates[2]), cv::FONT_HERSHEY_SIMPLEX, 0.75, cv::Scalar(0, 0, 0), 1);
   }
   return frame_;
 }
@@ -66,8 +75,8 @@ cv::Mat Track::drawGreenBoundingBox()
  */
 std::vector<float> Track::getCoordinatesInCameraFrame(std::vector<float> coordinates)
 {
-  std::vector<float> v1(4);
-  v1 = {64.3, 53.3, 94.3, 83.3};
+  std::vector<float> v1(2);
+  v1 = {coordinates[0]+(coordinates[1]/2), coordinates[2]+(coordinates[3]/2)};
 
   return v1;
 }

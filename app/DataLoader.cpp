@@ -13,26 +13,26 @@
 
 #include "../include/DataLoader.h"
 #include "../include/Detection.h"
-// #include "../include/Track.h"
+#include "../include/Track.h"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
 Detection detection;
-//Track tracker;
+Track tracker;
 /**
  * @brief Dataloader constructor.
  */
 DataLoader::DataLoader()
 {
-    path = "../person.jpg";
-    frame_ = cv::imread(path, cv::IMREAD_COLOR);
+    path_ = "../person.jpg";
+    frame_ = cv::imread(path_, cv::IMREAD_COLOR);
 }
 
-DataLoader::Dataloader(std::string path_, std::string method)
+DataLoader::DataLoader(std::string path, std::string method)
 {
-    path = path_;
+    path_ = path;
     method_ = method;
 }
 /**
@@ -58,13 +58,13 @@ int DataLoader::checkParser(cv::CommandLineParser parser)
 {
     if (parser.has("image"))
     {
-        path = parser.get<std::string>("image");
+        path_ = parser.get<std::string>("image");
         std::cout << "Data input method is Image" << std::endl;
         return 0;
     }
     else if (parser.has("video"))
     {
-        path = parser.get<std::string>("video");
+        path_ = parser.get<std::string>("video");
         std::cout << "Data input method is Video" << std::endl;
         return 0;
     }
@@ -90,22 +90,22 @@ void DataLoader::processInput(cv::CommandLineParser parser)
         if (parser.has("image"))
         {
             // Open the input file
-            std::ifstream inputfile(path);
+            std::ifstream inputfile(path_);
             if (!inputfile)
                 throw("error: Image or video file required");
-            capture.open(path);
-            path.replace(path.end() - 4, path.end(), "_YOLOv4_output_cpp.jpg");
-            outputFile = path;
+            capture.open(path_);
+            path_.replace(path_.end() - 4, path_.end(), "_YOLOv4_output_cpp.jpg");
+            outputFile = path_;
         }
         else if (parser.has("video"))
         {
             // Open the video file
-            std::ifstream inputfile(path);
+            std::ifstream inputfile(path_);
             if (!inputfile)
                 throw("error: Image or video file required");
-            capture.open(path);
-            path.replace(path.end() - 4, path.end(), "_YOLOv4_output_cpp.avi");
-            outputFile = path;
+            capture.open(path_);
+            path_.replace(path_.end() - 4, path_.end(), "_YOLOv4_output_cpp.avi");
+            outputFile = path_;
             // Get the video writer initialized to save the output video
             video.open(outputFile, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 28, cv::Size(capture.get(cv::CAP_PROP_FRAME_WIDTH), capture.get(cv::CAP_PROP_FRAME_HEIGHT)));
         }
@@ -115,21 +115,21 @@ void DataLoader::processInput(cv::CommandLineParser parser)
 
             if (method_ == "image")
             {
-                std::ifstream inputfile(path);
+                std::ifstream inputfile(path_);
                 if (!inputfile)
                     throw("error: Image or video file required");
-                capture.open(path);
-                path.replace(path.end() - 4, path.end(), "_YOLOv4_output_cpp.jpg");
-                outputFile = path;
+                capture.open(path_);
+                path_.replace(path_.end() - 4, path_.end(), "_YOLOv4_output_cpp.jpg");
+                outputFile = path_;
             }
             else
             {
-                std::ifstream inputfile(path);
+                std::ifstream inputfile(path_);
                 if (!inputfile)
                     throw("error: Image or video file required");
-                capture.open(path);
-                path.replace(path.end() - 4, path.end(), "_YOLOv4_output_cpp.avi");
-                outputFile = path;
+                capture.open(path_);
+                path_.replace(path_.end() - 4, path_.end(), "_YOLOv4_output_cpp.avi");
+                outputFile = path_;
                 // Get the video writer initialized to save the output video
                 video.open(outputFile, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 28, cv::Size(capture.get(cv::CAP_PROP_FRAME_WIDTH), capture.get(cv::CAP_PROP_FRAME_HEIGHT)));
             }
@@ -145,7 +145,7 @@ void DataLoader::processInput(cv::CommandLineParser parser)
     cv::namedWindow(kWinName, cv::WINDOW_NORMAL);
     int frameNumber = 1;
 
-    //tracker.initializeTracker();
+    tracker.initializeTracker();
     std::vector<cv::Rect> detections;
     std::vector<float> confidenceDetection;
     while (cv::waitKey(1) < 0)
@@ -160,7 +160,7 @@ void DataLoader::processInput(cv::CommandLineParser parser)
             break;
         }
         detection.setFrame(frame_);
-        //tracker.setFrame(frame_);
+        tracker.setFrame(frame_);
         if (frameNumber % 45 == 0)
         {
             detections.clear();
@@ -169,17 +169,19 @@ void DataLoader::processInput(cv::CommandLineParser parser)
 
             detections = detection.processFrameforHuman();
 
-            //tracker.setFrame(frame_);
-            //tracker.runTrackerAlgorithm(detections, confidenceDetection);
+            tracker.setFrame(frame_);
+            tracker.runTrackerAlgorithm(detections, confidenceDetection);
 
             // write frame to video
         }
-        // else
-        // {
-        //     //tracker.updateTracker();
-        // }
-        //frame_ = tracker.drawGreenBoundingBox();
+        else
+        {
+            tracker.updateTracker();
+        }
 
+        
+        frame_ = tracker.drawGreenBoundingBox();
+        
         cv::Mat finalFrame;
         frame_.convertTo(finalFrame, CV_8U);
         if (parser.has("image"))
