@@ -16,7 +16,7 @@ sudo apt-get install x264 v4l-utils
 ### For opencv
 git clone https://github.com/opencv/opencv.git
 cd opencv 
-git checkout 4.4.0
+git checkout 4.4.0 
 cd ..
 git clone https://github.com/opencv/opencv_contrib.git
 cd opencv_contrib
@@ -37,7 +37,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 ## find out number of CPU cores in your machine
 # nproc
 ## substitute 4 by output of nproc
-make -j$(nproc)
+make -j4
 sudo make install
 sudo sh -c 'echo "/usr/local/lib" >> /etc/ld.so.conf.d/opencv.conf'
 sudo ldconfig
