@@ -61,20 +61,20 @@ public:
      * @param method Defines the type for our input stream 
      * @return void
      */
-    DataLoader(std::string &path, std::string &method);
+    DataLoader(std::string path, std::string method);
     /**
      * @brief Set the Input Stream Method object
      * @param method Defines the type for our input stream 
      * @return void
      */
-    void setInputStreamMethod(std::string &method);
+    void setInputStreamMethod(std::string method);
 
         /**
      * @brief Set the path of input file
      * @param path Defines the type for our input stream 
      * @return void
      */
-    void setPath(std::string &path);
+    void setPath(std::string path);
 
     /**
      * @brief Get the Input Stream Method object. Fetches input method 

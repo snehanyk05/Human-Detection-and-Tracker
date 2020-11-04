@@ -12,6 +12,9 @@
  * 
  */
 #include <gtest/gtest.h>
+#include <iostream>
+#include <map>
+#include <vector>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -19,9 +22,7 @@
 #include "../include/DataLoader.h"
 #include "../include/Detection.h"
 #include "../include/Track.h"
-#include <map>
-#include <vector>
-#include <iostream>
+
 
 // keys It is used for showing parsing examples.
 const char *keys =
@@ -36,15 +37,15 @@ Detection detection1;
 Track dummytrack;
 
 std::vector<float> vec1 = {0.7, 0.9};
-std::vector<std::vector<float>> vec2 = {{34.0, 23.1, 64.2, 53.4}, {64.3, 53.3, 94.3, 83.3}};
+std::vector<std::vector<float>> vec2 =
+{{34.0, 23.1, 64.2, 53.4}, {64.3, 53.3, 94.3, 83.3}};
 
 //*****************************************************************************************************
 
 /**
  * @brief Test case for checkParser method of DataLoader class.
  */
-TEST(DataLoaderTest, checkParser)
-{
+TEST(DataLoaderTest, checkParser) {
     int argc = 0;
     const char *argv = "image";
     cv::CommandLineParser parser(argc, &argv, keys);
@@ -54,8 +55,7 @@ TEST(DataLoaderTest, checkParser)
 /**
  * @brief Test case for getInputStreamMethod and setInputStreamMethod method of DataLoader class. 
  */
-TEST(DataLoaderTest, SetandgetPath)
-{
+TEST(DataLoaderTest, SetandgetPath) {
     std::string test_method = "video";
     dummydataloader.setInputStreamMethod(test_method);
     EXPECT_EQ(test_method, dummydataloader.getInputStreamMethod());
@@ -65,8 +65,7 @@ TEST(DataLoaderTest, SetandgetPath)
  * @brief Test case for processInput method of DatALoader class, in case of input method as image. The
  * test verifies that processInputo doesnt throw an exception.
  */
-TEST(DataLoaderTest, checkProcessImage)
-{
+TEST(DataLoaderTest, checkProcessImage) {
     int argc = 0;
     const char *argv = "image";
     cv::CommandLineParser parser(argc, &argv, keys);
@@ -81,8 +80,7 @@ TEST(DataLoaderTest, checkProcessImage)
  * @brief Test case for processInput method of DataLoader class in case of input method as video. The
  * test verifies that processInput doesnt throw an exception.
  */
-TEST(DataLoaderTest, checkProcessVideo)
-{
+TEST(DataLoaderTest, checkProcessVideo) {
     int argc = 0;
     const char *argv = "video";
     cv::CommandLineParser parser(argc, &argv, keys);
@@ -94,24 +92,22 @@ TEST(DataLoaderTest, checkProcessVideo)
         dummydataloader.processInput(parser);
     });
 }
-//***************************************************************************************8
 /**
  * @brief Test case for loadModelandLabelClasses method of Detection class. Loads model class, config and weight files.
  */
-TEST(DetectionTest, checkModelFiles)
-{
+TEST(DetectionTest, checkModelFiles) {
     std::string dummyclassfile = "../coco.names";
     std::string dummyweightfile = "../yolov4.weights";
     std::string dummyconfigfile = "../yolov4.cfg";
     EXPECT_NO_FATAL_FAILURE({
-        detection1.loadModelandLabelClasses(dummyclassfile, dummyweightfile, dummyconfigfile);
+        detection1.loadModelandLabelClasses(dummyclassfile,
+        dummyweightfile, dummyconfigfile);
     });
 }
 /**
  * @brief Test Case for Initializing Confidence and non maximum suppression threshold along with width and height of the image
  */
-TEST(DetectionTest, checkInitialParams)
-{
+TEST(DetectionTest, checkInitialParams) {
     EXPECT_NO_FATAL_FAILURE({
         detection1.initializeParams(0.4, 0.5, 416, 416);
     });
@@ -119,8 +115,7 @@ TEST(DetectionTest, checkInitialParams)
 /**
  * @brief Test case for settFrame method of DataLoader class. 
  */
-TEST(DetectionTest, TestFrame)
-{
+TEST(DetectionTest, TestFrame) {
     cv::Mat test_frame = cv::imread("../person.jpg");
     EXPECT_NO_FATAL_FAILURE({
         detection1.setFrame(test_frame);
@@ -130,8 +125,7 @@ TEST(DetectionTest, TestFrame)
 /**
  * @brief Test case for processFrameforHuman method. Also checks for Detections return from this method.
  */
-TEST(DetectionTest, ProcessHumandetections)
-{
+TEST(DetectionTest, ProcessHumandetections) {
     cv::VideoCapture capture;
     capture.open("../person.jpg");
     cv::Mat frame;
@@ -141,8 +135,10 @@ TEST(DetectionTest, ProcessHumandetections)
     std::vector<cv::Rect> testdetections = detection2.processFrameforHuman();
 
     std::vector<cv::Rect> getdetect = detection2.getDetections();
-    std::vector<int> testdetect = {testdetections[0].x, testdetections[0].y, testdetections[0].height, testdetections[0].width};
-    std::vector<int> testdetect1 = {getdetect[0].x, getdetect[0].y, getdetect[0].height, getdetect[0].width};
+    std::vector<int> testdetect = {testdetections[0].x,
+    testdetections[0].y, testdetections[0].height, testdetections[0].width};
+    std::vector<int> testdetect1 = {getdetect[0].x,
+    getdetect[0].y, getdetect[0].height, getdetect[0].width};
 
     EXPECT_EQ(testdetect, testdetect1);
 }
@@ -150,8 +146,7 @@ TEST(DetectionTest, ProcessHumandetections)
 /**
  * @brief Test case for getConfidence method. Checks for any fatal error.
  */
-TEST(DetectionTest, Processconfidence)
-{
+TEST(DetectionTest, Processconfidence) {
     cv::VideoCapture capture;
     capture.open("../person.jpg");
     cv::Mat frame;
@@ -165,13 +160,10 @@ TEST(DetectionTest, Processconfidence)
     EXPECT_EQ(getconf1, getconf2);
 }
 
-//*************************************************************************************//
-
 /**
  * @brief Test case for setFrame method of Track class. 
  */
-TEST(TrackerTest, TestFrame)
-{
+TEST(TrackerTest, TestFrame) {
     cv::Mat test_frame = cv::imread("../person.jpg");
     EXPECT_NO_FATAL_FAILURE({
         dummytrack.setFrame(test_frame);
@@ -181,46 +173,8 @@ TEST(TrackerTest, TestFrame)
 /**
  * @brief Test case for initialize tracker method of Track class. Checks for any fatal error
  */
-TEST(TrackerTest, Initializetracker)
-{
+TEST(TrackerTest, Initializetracker) {
     EXPECT_NO_FATAL_FAILURE({
         dummytrack.initializeTracker();
     });
 }
-
-// /**
-//  * @brief Test case for runTrackerAlgorithm method of Track class. Checks for any fatal error
-//  */
-// TEST(TrackerTest, runtrackertest)
-// {
-//     cv::VideoCapture capture;
-//     capture.open("../run.mp4");
-//     cv::Mat frame;
-//     capture >> frame;
-//     detection1.setFrame(frame);
-
-//     std::vector<cv::Rect> testdetections = detection1.processFrameforHuman();
-//     std::vector<float> testconfidence = {0.7, 0.9};
-//     dummytrack.initializeTracker();
-//     dummytrack.setFrame(frame);
-
-//     EXPECT_NO_FATAL_FAILURE({
-//         dummytrack.runTrackerAlgorithm(testdetections, testconfidence);
-//     });
-// }
-// /**
-//  * @brief Test case for drawGreenBoundingBox method of Track class. checks for exception error.
-//  */
-// TEST(TrackerTest, checkgreenboundingbox)
-// {
-//     cv::Mat frame = cv::imread("../person.jpg");
-//     detection1.setFrame(frame);
-//     std::vector<cv::Rect> testdetections = detection1.processFrameforHuman();
-//     std::vector<float> testconfidence = {0.7, 0.9};
-//     dummytrack.setFrame(frame);
-//     dummytrack.initializeTracker();
-//     dummytrack.runTrackerAlgorithm(testdetections, testconfidence);
-//     EXPECT_NO_FATAL_FAILURE({
-//         dummytrack.drawGreenBoundingBox();
-//     });
-// }

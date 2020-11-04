@@ -140,7 +140,7 @@ public:
      * @param modelClassFile type : std::string 
      * @return void
      */
-    void loadModelandLabelClasses(std::string &modelWeightsFile, std::string &modelConfigFile, std::string &modelClassFile);
+    void loadModelandLabelClasses(std::string modelWeightsFile, std::string modelConfigFile, std::string modelClassFile);
 /**
      * @brief Sets current frame
      * @param frame type: cv::Mat
