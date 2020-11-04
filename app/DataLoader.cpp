@@ -25,15 +25,15 @@ Track tracker;
  * @brief Dataloader constructor.
  */
 DataLoader::DataLoader() {
-    path_ = "../person.jpg";
+    setPath("../person.jpg");
     frame_ = cv::imread(path_, cv::IMREAD_COLOR);
 }
 /**
  * @brief Dataloader constructor with path and method parameters.
  */
-DataLoader::DataLoader(std::string &path, std::string &method){
-    path_ = path;
-    method_ = method;
+DataLoader::DataLoader(std::string &path, std::string &method) {
+    setInputStreamMethod(method);
+    setPath(path);
 }
 /**
  * @brief Set the Input Stream Method object
@@ -48,6 +48,14 @@ void DataLoader::setInputStreamMethod(std::string &method)
 std::string DataLoader::getInputStreamMethod()
 {
     return method_;
+}
+
+/**
+ * @brief Set the Input Stream Method object
+ */
+void DataLoader::setPath(std::string &path)
+{
+    path_ = path;
 }
 
 /**************************************************************************************************************/

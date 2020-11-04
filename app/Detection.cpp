@@ -21,9 +21,10 @@ Detection::Detection()
   nmsThreshold_ = 0.4;
   inpWidth_ = 416;
   inpHeight_ = 416;
-  modelClassFile_ = "../coco.names";
-  modelConfigFile_ = "../yolov4.cfg";
-  modelWeightsFile_ = "../yolov4.weights";
+  // modelClassFile_ = "../coco.names";
+  // modelConfigFile_ = "../yolov4.cfg";
+  // modelWeightsFile_ = "../yolov4.weights";
+  loadModelandLabelClasses("../yolov4.weights", "../yolov4.cfg", "../coco.names");
 }
 /**
  * @brief Fetches all bounding boxes of detected humans in a single frame

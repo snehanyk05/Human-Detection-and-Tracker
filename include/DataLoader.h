@@ -54,11 +54,7 @@ public:
      * @brief Construct a new Data Loader object
      * 
      */
-    DataLoader()
-    {
-        path_ = "../person.jpg";
-        frame_ = cv::imread(path_, cv::IMREAD_COLOR);
-    }
+    DataLoader();
     /**
      * @brief Construct a new Data Loader object
      * @param path is the path to the input file (jpg or mp4) 
@@ -72,6 +68,13 @@ public:
      * @return void
      */
     void setInputStreamMethod(std::string &method);
+
+        /**
+     * @brief Set the path of input file
+     * @param path Defines the type for our input stream 
+     * @return void
+     */
+    void setPath(std::string &path);
 
     /**
      * @brief Get the Input Stream Method object. Fetches input method 
