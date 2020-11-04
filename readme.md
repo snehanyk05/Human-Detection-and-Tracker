@@ -57,7 +57,7 @@ We managed to create a robust set of test cases with:
 ### Video output
 Please find the videos in the below link:
 
-![Video output](https://drive.google.com/drive/folders/1WQY_-ZKl6SaCuTw_C-mdeYvkv5fAyVub?usp=sharing) 
+[Video output](https://drive.google.com/drive/folders/1WQY_-ZKl6SaCuTw_C-mdeYvkv5fAyVub?usp=sharing) 
 
 ## Dependencies
 
