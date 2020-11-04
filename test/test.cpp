@@ -158,7 +158,7 @@ TEST(DetectionTest, Processconfidence)
     capture >> frame;
     Detection detection2;
     detection2.setFrame(frame);
-    std::vector<cv::Rect> testdetections2 = detection2.processFrameforHuman();
+    detection2.processFrameforHuman();
 
     std::vector<float> getconf1 = detection2.getConfidence();
     std::vector<float> getconf2 = detection2.getConfidence();

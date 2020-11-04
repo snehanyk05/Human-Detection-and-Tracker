@@ -31,14 +31,14 @@ DataLoader::DataLoader() {
 /**
  * @brief Dataloader constructor with path and method parameters.
  */
-DataLoader::DataLoader(std::string path, std::string method){
+DataLoader::DataLoader(std::string &path, std::string &method){
     path_ = path;
     method_ = method;
 }
 /**
  * @brief Set the Input Stream Method object
  */
-void DataLoader::setInputStreamMethod(std::string method)
+void DataLoader::setInputStreamMethod(std::string &method)
 {
     method_ = method;
 }

@@ -30,47 +30,49 @@ private:
      * @brief Private variable to define the type for our input stream
      * 
      */
-    std::string method_;
+    std::string method_="";
     /**
      * @brief Private variable to Store current frame
      * 
      */
     cv::Mat frame_;
-    
+
     /**
      * @brief Private varible for path to the input method  
      * 
      */
-    std::string path_;
-
-
+    std::string path_="";
 
     /**
      * @brief Private variable for path of the output file
      * 
      */
-    std::string outputFile;
+    std::string outputFile="";
 
 public:
     /**
      * @brief Construct a new Data Loader object
      * 
      */
-    DataLoader();
-     /**
+    DataLoader()
+    {
+        path_ = "../person.jpg";
+        frame_ = cv::imread(path_, cv::IMREAD_COLOR);
+    }
+    /**
      * @brief Construct a new Data Loader object
      * @param path is the path to the input file (jpg or mp4) 
      * @param method Defines the type for our input stream 
      * @return void
      */
-    DataLoader(std::string path, std::string method);
+    DataLoader(std::string &path, std::string &method);
     /**
      * @brief Set the Input Stream Method object
      * @param method Defines the type for our input stream 
      * @return void
      */
-    void setInputStreamMethod(std::string method);
-    
+    void setInputStreamMethod(std::string &method);
+
     /**
      * @brief Get the Input Stream Method object. Fetches input method 
      * @param void
@@ -85,7 +87,7 @@ public:
      */
     void processInput(cv::CommandLineParser parser);
 
-  /**
+    /**
    * @brief updates isVideo and isImage values.
    * @param[in] parser type: cv::CommandLineParser It containes information about the imagepath and videopath.
    * @return type int.
@@ -96,5 +98,5 @@ public:
      * @brief Destroy the Data Loader object
      * 
      */
-    ~DataLoader(){}
+    ~DataLoader() {}
 };

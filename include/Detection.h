@@ -58,19 +58,19 @@ private:
      * @brief Private variable for modelWeightsFile
      * 
      */
-    std::string modelWeightsFile_;
+    std::string modelWeightsFile_="";
 
     /**
      * @brief Private variable for modelConfigFile
      * 
      */
-    std::string modelConfigFile_;
+    std::string modelConfigFile_="";
 
     /**
      * @brief Private variable for modelClassFile
      * 
      */
-    std::string modelClassFile_;
+    std::string modelClassFile_="";
 
     /**
      * @brief Private variable for current frame
@@ -140,7 +140,7 @@ public:
      * @param modelClassFile type : std::string 
      * @return void
      */
-    void loadModelandLabelClasses(std::string modelWeightsFile, std::string modelConfigFile, std::string modelClassFile);
+    void loadModelandLabelClasses(std::string &modelWeightsFile, std::string &modelConfigFile, std::string &modelClassFile);
 /**
      * @brief Sets current frame
      * @param frame type: cv::Mat

@@ -30,7 +30,7 @@ void Track::initializeTracker()
 /**
  * @brief Runs the tracking algo by taking in detections and conidence scores
  */
-void Track::runTrackerAlgorithm(std::vector<cv::Rect> detections, std::vector<float> confidenceDetection)
+void Track::runTrackerAlgorithm(std::vector<cv::Rect> detections)
 {
   cv::Ptr<cv::MultiTracker> multiTrackerTemp = cv::MultiTracker::create();
   multiTracker = multiTrackerTemp;

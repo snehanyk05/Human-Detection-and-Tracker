@@ -53,7 +53,7 @@ void Detection::initializeParams(float confThreshold, float nmsThreshold, float 
 /**
  * @brief Sets path to model weights file, model config file and model class files
  */
-void Detection::loadModelandLabelClasses(std::string modelWeightsFile, std::string modelConfigFile, std::string modelClassFile)
+void Detection::loadModelandLabelClasses(std::string &modelWeightsFile, std::string &modelConfigFile, std::string &modelClassFile)
 {
   modelClassFile_ = modelClassFile;
   modelConfigFile_ = modelConfigFile;

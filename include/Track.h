@@ -18,12 +18,6 @@ class Track
 
 private:
     /**
-     * @brief Private Variable for track ID of individual human being tracked
-     * 
-     */
-    int track_id;
-
-    /**
      * @brief Private Variable for the multip tracker network
      * 
      */
@@ -64,10 +58,9 @@ public:
     /**
      * @brief Runs the tracking algo by taking in detections and confidence scores
      * @param detections type : std::vector<cv::Rect>
-     * @param confidenceDetection type : std::vector<float>
      * @return void
      */
-    void runTrackerAlgorithm(std::vector<cv::Rect> detections, std::vector<float> confidenceDetection);
+    void runTrackerAlgorithm(std::vector<cv::Rect> detections);
     /**
      * @brief Resizes bounding boxes
      * @param box type : cv::Rect gives box coordinates
