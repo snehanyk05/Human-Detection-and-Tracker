@@ -24,18 +24,6 @@ Detection::Detection()
   modelClassFile_ = "../coco.names";
   modelConfigFile_ = "../yolov4.cfg";
   modelWeightsFile_ = "../yolov4.weights";
-
-  // std::vector<float> v(4);
-  // v = { 34.0,23.1,64.2,53.4 };
-  // detections.push_back(v);
-  // confidenceDetection.push_back(0.7);
-
-  // std::vector<float> v1(4);
-  // v1 = { 64.3,53.3,94.3,83.3 };
-  // detections.push_back(v1);
-
-  // confidenceDetection.push_back(0.9);
-  // detectionsDict["frame_1"]= detections;
 }
 /**
  * @brief Fetches all bounding boxes of detected humans in a single frame
@@ -112,13 +100,13 @@ std::vector<cv::Rect> Detection::processFrameforHuman()
 /**
  * @brief Draws a bounding box over frame from the given coordinates
  */
-void Detection::drawRedBoundingBox(std::vector<int> coordinates, int classID)
+void Detection::drawRedBoundingBox(std::vector<int> coordinates, int classID, float conf)
 {
   //Draw a rectangle displaying the bounding box
   cv::rectangle(frame_, cv::Point(coordinates[0], coordinates[1]), cv::Point(coordinates[2], coordinates[3]), cv::Scalar(0, 0, 255), 3);
 
   //Get the label for the class name and its confidence
-  std::string label = cv::format("%.2f", 1);
+  std::string label = cv::format("%.2f", conf);
   // if (!classes.empty())
   // {
   // CV_Assert(classId < (int)classes.size());
@@ -183,8 +171,10 @@ std::vector<cv::Rect> Detection::postProcess(const std::vector<cv::Mat> &outs)
     std::vector<int> coordinates = {box.x, box.y, box.x + box.width, box.y + box.height};
 
     if (classes[classIds[idx]] == "person")
-      drawRedBoundingBox(coordinates, classIds[idx]);
+      drawRedBoundingBox(coordinates, classIds[idx], confidences[idx]);
   }
+
+  confidenceDetection = confidences;
   return boxes;
 }
 

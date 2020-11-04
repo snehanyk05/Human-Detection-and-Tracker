@@ -41,7 +41,7 @@ private:
      * @brief Private varible for path to the input method  
      * 
      */
-    std::string path;
+    std::string path_;
 
 
 
@@ -57,7 +57,7 @@ public:
      * 
      */
     DataLoader();
-
+    DataLoader(std::string path, std::string method);
     /**
      * @brief Set the Input Stream Method object
      * @param method Defines the type for our input stream 

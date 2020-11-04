@@ -96,7 +96,7 @@ private:
      * @param coordinates Type : std::vector<float> 
      * @return void
      */
-    void drawRedBoundingBox(std::vector<int> coordinates, int classID);
+    void drawRedBoundingBox(std::vector<int> coordinates, int classID, float conf);
     std::vector<cv::String> getOutputsNames(const cv::dnn::Net &net);
     std::vector<cv::Rect> postProcess(const std::vector<cv::Mat> &outs);
 
