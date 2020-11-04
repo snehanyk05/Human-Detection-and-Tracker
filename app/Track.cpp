@@ -19,7 +19,7 @@ Track::Track()
 {
 }
 /**
- * @brief Initializes params for the network
+ * @brief Initializes  the network for the tracker
  */
 void Track::initializeTracker()
 {
@@ -28,9 +28,9 @@ void Track::initializeTracker()
 
 
 /**
- * @brief Runs the tracking algo by taking in frameid, detections and conidence scores
+ * @brief Runs the tracking algo by taking in detections and conidence scores
  */
-void Track::runTrackerAlgorithm(std::vector<cv::Rect> detections, std::vector<float> confidenceDetection)
+void Track::runTrackerAlgorithm(std::vector<cv::Rect> detections)
 {
   cv::Ptr<cv::MultiTracker> multiTrackerTemp = cv::MultiTracker::create();
   multiTracker = multiTrackerTemp;
@@ -80,6 +80,9 @@ std::vector<float> Track::getCoordinatesInCameraFrame(std::vector<float> coordin
 
   return v1;
 }
+/**
+ * @brief Resizes bounding boxes
+ */
 void Track::resizeBoxes(cv::Rect &box)
 {
   box.x += cvRound(box.width * 0.1);
@@ -87,7 +90,9 @@ void Track::resizeBoxes(cv::Rect &box)
   box.y += cvRound(box.height * 0.06);
   box.height = cvRound(box.height * 0.8);
 }
-
+/**
+ * @brief Updates tracker
+ */
 void Track::updateTracker()
 {
   multiTracker->update(frame_);

@@ -18,13 +18,7 @@ class Track
 
 private:
     /**
-     * @brief Private Variable for track ID of individual human being tracked
-     * 
-     */
-    int track_id;
-
-    /**
-     * @brief Private Variable for the Parameters to tune the network 
+     * @brief Private Variable for the multip tracker network
      * 
      */
     cv::Ptr<cv::MultiTracker> multiTracker;
@@ -33,7 +27,13 @@ private:
      * 
      */
     cv::Mat frame_;
+    /**
+     * @brief Gets the Poses from the bounding boxes in the UAV's Camera Frame.
+     * @param coordinates type : std::vector<float>
+     * @return std::vector<float> Retruns the coordinates for bounding boxes in the frame
+     */
 
+    std::vector<float> getCoordinatesInCameraFrame(std::vector<float> coordinates);
 
 public:
     /**
@@ -42,39 +42,41 @@ public:
      */
     Track();
     /**
- * @brief Sets current frame
- */
+     * @brief Sets current frame
+     * @param frame type : cv::Mat
+     * @return void
+     */
 
     void setFrame(cv::Mat frame);
     /**
-     * @brief Initializes params for the network
-     * @param params type : std::vector<float>
+     * @brief Initializes the tracker
+     * @param void
      * @return void
      */
     void initializeTracker();
 
-    
     /**
-     * @brief Gets the Poses from the bounding boxes in the UAV's Camera Frame.
-     * @param coordinates type : std::vector<float>
-     * @return std::vector<float> Retruns the coordinates for bounding boxes in the frame
-     */
-
-    std::vector<float> getCoordinatesInCameraFrame(std::vector<float> coordinates);
-    /**
-     * @brief Runs the tracking algo by taking in frameid, detections and conidence scores
-     * @param frame type : cv::Mat
-     * @param detections type : std::vector<std::vector<float>>
-     * @param confidenceDetection type : std::vector<float>
+     * @brief Runs the tracking algo by taking in detections and confidence scores
+     * @param detections type : std::vector<cv::Rect>
      * @return void
      */
-    void runTrackerAlgorithm(std::vector<cv::Rect> detections, std::vector<float> confidenceDetection);
+    void runTrackerAlgorithm(std::vector<cv::Rect> detections);
+    /**
+     * @brief Resizes bounding boxes
+     * @param box type : cv::Rect gives box coordinates
+     * @return void
+     */
     void resizeBoxes(cv::Rect &box);
+    /**
+     * @brief Updates frames in the tracker
+     * @param void
+     * @return void
+     */
     void updateTracker();
     /**
      * @brief Draws green bounding box around the tracked human
-     * @param coordinates type : std::vector<float>
-     * @return void
+     * @param void
+     * @return cv::Mat return frame with tracking bounding box
      */
     cv::Mat drawGreenBoundingBox();
     /**
