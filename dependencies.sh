@@ -26,6 +26,11 @@ cd opencv
 mkdir build
 cd build
 cmake -D CMAKE_BUILD_TYPE=RELEASE \
+      -D BUILD_EXAMPLES=OFF \
+      -D BUILD_opencv_apps=OFF \
+      -D BUILD_DOCS=OFF \
+      -D BUILD_PERF_TESTS=OFF \
+      -D BUILD_TESTS=OFF \
       -D CMAKE_INSTALL_PREFIX=/usr/local \
       -D INSTALL_C_EXAMPLES=ON \
       -D WITH_TBB=ON \
