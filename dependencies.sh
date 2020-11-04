@@ -16,11 +16,11 @@ sudo apt-get install x264 v4l-utils
 ### For opencv
 git clone https://github.com/opencv/opencv.git
 cd opencv 
-git checkout 4.5.0 
+git checkout 4.4.0 
 cd ..
 git clone https://github.com/opencv/opencv_contrib.git
 cd opencv_contrib
-git checkout 4.5.0
+git checkout 4.4.0
 cd ..
 cd opencv
 mkdir build
