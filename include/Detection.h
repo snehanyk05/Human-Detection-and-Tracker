@@ -77,6 +77,10 @@ private:
      * 
      */
     cv::Mat frame_;
+    /**
+     * @brief Private variable for storing class labels of coco dataset
+     * 
+     */
     std::vector<std::string> classes;
 
     /**
@@ -93,11 +97,23 @@ private:
 
     /**
      * @brief Draws a bounding box over frame from the given coordinates
-     * @param coordinates Type : std::vector<float> 
+     * @param coordinates Type : std::vector<float>  stores coodinates of bounding box
+     * @param classID Type : int stores class id of class label
+     * @param conf Type : float confidence of the detected class
      * @return void
      */
     void drawRedBoundingBox(std::vector<int> coordinates, int classID, float conf);
+    /**
+     * @brief Gets output names of the last layer of the neural network
+     * @param net Type : const cv::dnn::Net  stores the neural network
+     * @return std::vector<cv::String> return names of layers
+     */
     std::vector<cv::String> getOutputsNames(const cv::dnn::Net &net);
+    /**
+     * @brief Gets correct detections and bounding boxes are reduced
+     * @param outs std::vector<cv::Mat>  output of last layer
+     * @return std::vector<cv::Rect> return detected humans in a frame
+     */
     std::vector<cv::Rect> postProcess(const std::vector<cv::Mat> &outs);
 
 public:
@@ -125,20 +141,25 @@ public:
      * @return void
      */
     void loadModelandLabelClasses(std::string modelWeightsFile, std::string modelConfigFile, std::string modelClassFile);
+/**
+     * @brief Sets current frame
+     * @param frame type: cv::Mat
+     * @return void
+     */
 
+    void setFrame(cv::Mat frame);
     /**
      * @brief Fetches all bounding boxes of detected humans in a single frame
      * @param void
-     * @return std::vector<std::vector<float>> - Returns all the detections in the frame
+     * @return std::vector<cv::Rect> - Returns all the detections in the frame
      */
     std::vector<cv::Rect> getDetections();
 
     /**
-     * @brief RUns YOLOv4 algo and detects humans. If humans detected returns 1 else 0.
+     * @brief RUns YOLOv4 algo and detects humans. 
      * 
-     * @param frame Type : cv::Mat
-     * @return true 
-     * @return false 
+     * @param void
+     * @return std::vector<cv::Rect> return detections in the frame
      */
     std::vector<cv::Rect> processFrameforHuman();
 
@@ -153,8 +174,6 @@ public:
      * @brief Destroy the Detection object
      * 
      */
-
-    void setFrame(cv::Mat frame);
 
     ~Detection() {}
 };

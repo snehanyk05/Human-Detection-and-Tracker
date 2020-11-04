@@ -46,7 +46,7 @@ private:
 
 
     /**
-     * @brief Private variable to 
+     * @brief Private variable for path of the output file
      * 
      */
     std::string outputFile;
@@ -57,6 +57,12 @@ public:
      * 
      */
     DataLoader();
+     /**
+     * @brief Construct a new Data Loader object
+     * @param path is the path to the input file (jpg or mp4) 
+     * @param method Defines the type for our input stream 
+     * @return void
+     */
     DataLoader(std::string path, std::string method);
     /**
      * @brief Set the Input Stream Method object
@@ -73,16 +79,15 @@ public:
     std::string getInputStreamMethod();
 
     /**
-     * @brief Processes the input file
-     * @param void
+     * @brief Processes the input file to get tracking video output file
+     * @param parser type: cv::CommandLineParser
      * @return void
      */
     void processInput(cv::CommandLineParser parser);
 
-
   /**
    * @brief updates isVideo and isImage values.
-   * @param[in] parser It containes information about the imagepath and videopath.
+   * @param[in] parser type: cv::CommandLineParser It containes information about the imagepath and videopath.
    * @return type int.
    */
     int checkParser(cv::CommandLineParser parser);

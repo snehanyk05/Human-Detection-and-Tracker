@@ -40,7 +40,6 @@ std::vector<float> Detection::getConfidence()
   return confidenceDetection;
 }
 
-
 /**
  * @brief Initializes Confidence and non maximum suppression threshold along with width and height of the image
  */
@@ -71,7 +70,7 @@ void Detection::setFrame(cv::Mat frame)
   frame_ = frame;
 }
 /**
- * @brief RUns YOLOv4 algo and detects humans. If humans detected returns 1 else 0.
+ * @brief RUns YOLOv4 algo and detects humans and returns detections
  */
 std::vector<cv::Rect> Detection::processFrameforHuman()
 {
@@ -92,13 +91,10 @@ std::vector<cv::Rect> Detection::processFrameforHuman()
 
   detections = postProcess(outs);
 
-  // cv::Mat detectedFrame;
-  // frame_.convertTo(detectedFrame, CV_8U);
-
   return detections;
 }
 /**
- * @brief Draws a bounding box over frame from the given coordinates
+ * @brief Draws a red bounding box over frame from the given coordinates
  */
 void Detection::drawRedBoundingBox(std::vector<int> coordinates, int classID, float conf)
 {
@@ -107,11 +103,8 @@ void Detection::drawRedBoundingBox(std::vector<int> coordinates, int classID, fl
 
   //Get the label for the class name and its confidence
   std::string label = cv::format("%.2f", conf);
-  // if (!classes.empty())
-  // {
-  // CV_Assert(classId < (int)classes.size());
+
   label = classes[classID] + ":" + label;
-  // }
 
   //Display the label at the top of the bounding box
   int baseLine;
@@ -120,6 +113,9 @@ void Detection::drawRedBoundingBox(std::vector<int> coordinates, int classID, fl
   cv::rectangle(frame_, cv::Point(coordinates[0], coordinates[1] - round(1.5 * labelSize.height)), cv::Point(coordinates[0] + round(1.5 * labelSize.width), coordinates[1] + baseLine), cv::Scalar(255, 255, 255), cv::FILLED);
   cv::putText(frame_, label, cv::Point(coordinates[0], coordinates[1]), cv::FONT_HERSHEY_SIMPLEX, 0.75, cv::Scalar(0, 0, 0), 1);
 }
+/**
+ * @brief Gets correct detections and bounding boxes are reduced
+ */
 
 std::vector<cv::Rect> Detection::postProcess(const std::vector<cv::Mat> &outs)
 {
@@ -177,6 +173,9 @@ std::vector<cv::Rect> Detection::postProcess(const std::vector<cv::Mat> &outs)
   confidenceDetection = confidences;
   return boxes;
 }
+/**
+ * @brief Gets output names of the last layer of the neural network
+ */
 
 std::vector<cv::String> Detection::getOutputsNames(const cv::dnn::Net &net)
 {

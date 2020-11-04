@@ -10,28 +10,28 @@
  * @copyright Copyright (c) 2020 Sneha Nayak, Sukoon Sarin
  * 
  */
-
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include "../include/DataLoader.h"
 #include "../include/Detection.h"
 #include "../include/Track.h"
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
+
 
 Detection detection;
 Track tracker;
 /**
  * @brief Dataloader constructor.
  */
-DataLoader::DataLoader()
-{
+DataLoader::DataLoader() {
     path_ = "../person.jpg";
     frame_ = cv::imread(path_, cv::IMREAD_COLOR);
 }
-
-DataLoader::DataLoader(std::string path, std::string method)
-{
+/**
+ * @brief Dataloader constructor with path and method parameters.
+ */
+DataLoader::DataLoader(std::string path, std::string method){
     path_ = path;
     method_ = method;
 }
