@@ -1,7 +1,8 @@
 # Human Detection and Tracker For ACME's Search and Rescue Drone
 [![Build Status](https://travis-ci.org/sukoonsarin/Human-Detection-and-Tracker.svg?branch=master)](https://travis-ci.org/github/sukoonsarin/Human-Detection-and-Tracker)
 [![Coverage Status](https://coveralls.io/repos/github/sukoonsarin/Human-Detection-and-Tracker/badge.svg?branch=master)](https://coveralls.io/github/sukoonsarin/Human-Detection-and-Tracker?branch=master)
-MIT Licence 
+
+## MIT Licence 
 [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](LICENSE) 
 ---
 
