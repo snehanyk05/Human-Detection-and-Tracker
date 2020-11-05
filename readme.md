@@ -91,7 +91,37 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+## Instructions to install Opencv4.4
 
+```
+git clone https://github.com/opencv/opencv.git
+cd opencv
+git checkout 4.4.0
+cd ..
+git clone https://github.com/opencv/opencv_contrib.git
+cd opencv_contrib
+git checkout 4.4.0
+cd ..
+sudo cp -r opencv_contrib/modules/tracking/ opencv/modules
+cd opencv
+mkdir build
+cd build
+cmake -D CMAKE_BUILD_TYPE=RELEASE \
+-D CMAKE_INSTALL_PREFIX=/usr/local \
+-D INSTALL_C_EXAMPLES=OFF \
+-D INSTALL_PYTHON_EXAMPLES=OFF \
+-D WITH_TBB=ON \
+-D WITH_V4L=ON \
+-D WITH_QT=ON \
+-D WITH_OPENGL=ON \
+-D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
+-D BUILD_EXAMPLES=OFF ..
+
+make -j$(nproc)
+sudo make install
+sudo sh -c "echo '/usr/local/lib' >> /etc/ld.so.conf.d/opencv.conf"
+sudo ldconfig 
+```
 ## Standard install via command-line
 
 ```
