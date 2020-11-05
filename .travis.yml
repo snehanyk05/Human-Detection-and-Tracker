@@ -64,6 +64,7 @@ before_script:
   - cd opencv_contrib
   - git checkout 4.4.0
   - cd ..
+  - sudo cp -r opencv_contrib/modules/tracking/ opencv/modules
   - cd opencv
   - mkdir build
   - cd build
