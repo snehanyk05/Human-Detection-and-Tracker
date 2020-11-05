@@ -154,7 +154,7 @@ std::vector<cv::Rect> Detection::postProcess(const std::vector<cv::Mat> &outs) {
   // Perform non maximum suppression to eliminate
   // redundant overlapping boxes with lower confidences
   std::vector<int> indices;
-  cv::dnn::dnn4_v20200908::NMSBoxes
+  cv::dnn::NMSBoxes
   (boxes, confidences, confThreshold_, nmsThreshold_, indices);
   for (size_t i = 0; i < indices.size(); ++i) {
     int idx = indices[i];
