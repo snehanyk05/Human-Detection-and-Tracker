@@ -84,6 +84,7 @@ before_script:
   - sudo ldconfig
 
   - cd ../../
+  - sudo cp -r opencv_contrib/modules/tracking/include/opencv2/tracking /usr/local/include/opencv4/opencv2/
   - echo "OpenCV installation DONE!"
 before_install:
   - pip install --user cpp-coveralls
