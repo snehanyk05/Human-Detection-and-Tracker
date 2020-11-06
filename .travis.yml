@@ -20,7 +20,7 @@ matrix:
             - cmake
             - cmake-data
             - git
-             - build-essential	
+            - build-essential	
             - checkinstall	
             - pkg-config	
             - yasm	
