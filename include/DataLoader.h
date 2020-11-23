@@ -30,24 +30,24 @@ private:
      * @brief Private variable to define the type for our input stream
      * 
      */
-    std::string method;
+    std::string method_="";
     /**
      * @brief Private variable to Store current frame
      * 
      */
-    cv::Mat frame;
-    
-    /**
-     * @brief Private variable to Store sequence of Frame 
-     * 
-     */
-    std::vector<cv::Mat> sequenceOfFrames;
-    
+    cv::Mat frame_;
+
     /**
      * @brief Private varible for path to the input method  
      * 
      */
-    std::string path;
+    std::string path_="";
+
+    /**
+     * @brief Private variable for path of the output file
+     * 
+     */
+    std::string outputFile="";
 
 public:
     /**
@@ -55,14 +55,27 @@ public:
      * 
      */
     DataLoader();
-
+    /**
+     * @brief Construct a new Data Loader object
+     * @param path is the path to the input file (jpg or mp4) 
+     * @param method Defines the type for our input stream 
+     * @return void
+     */
+    DataLoader(std::string path, std::string method);
     /**
      * @brief Set the Input Stream Method object
      * @param method Defines the type for our input stream 
      * @return void
      */
     void setInputStreamMethod(std::string method);
-    
+
+        /**
+     * @brief Set the path of input file
+     * @param path Defines the type for our input stream 
+     * @return void
+     */
+    void setPath(std::string path);
+
     /**
      * @brief Get the Input Stream Method object. Fetches input method 
      * @param void
@@ -71,15 +84,22 @@ public:
     std::string getInputStreamMethod();
 
     /**
-     * @brief Fetches the current Frame
-     * @param void
-     * @return cv::Mat - Returns the current Frame
+     * @brief Processes the input file to get tracking video output file
+     * @param parser type: cv::CommandLineParser
+     * @return void
      */
-    cv::Mat getFrame();
+    void processInput(cv::CommandLineParser parser);
+
+    /**
+   * @brief updates isVideo and isImage values.
+   * @param[in] parser type: cv::CommandLineParser It containes information about the imagepath and videopath.
+   * @return type int.
+   */
+    int checkParser(cv::CommandLineParser parser);
 
     /**
      * @brief Destroy the Data Loader object
      * 
      */
-    ~DataLoader(){}
+    ~DataLoader() {}
 };
